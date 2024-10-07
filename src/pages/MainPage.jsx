@@ -12,6 +12,7 @@ import ViewBookingModal from "../components/ViewBookingModal"
 
 import './MainPage.css';
 import axios from 'axios';
+import RestaurantDetails from "../components/RestaurantDetails";
 
 
 export default function MainPage() {
@@ -129,7 +130,8 @@ export default function MainPage() {
                     <ReserveModal show={showModal} handleClose={handleClose} />
                 </Col>
             </Row>
-
+            
+            <RestaurantDetails />
             {showConfirmation && (
                 <Row>
                     <Col>
