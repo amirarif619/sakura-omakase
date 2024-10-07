@@ -52,7 +52,7 @@ export default function MainPage() {
     }, []);
 
     const handleViewDetails = (booking) => {
-        setSelectedBooking(booking); // Set the selected booking
+        setSelectedBooking(booking); //
         setShowBookingModal(true); // Open the view details modal
     };
 
@@ -77,6 +77,15 @@ export default function MainPage() {
         setTimeout(() => {
             setShowConfirmation(false);
         }, 5000);
+    };
+
+    const handleEditedBookingCompleted = () => {
+        setConfirmationMessage("Booking updated successfully! See you soon!");
+        setShowConfirmation(true);
+    
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 5000); // Hide the confirmation after 5 seconds
     };
 
     return (
@@ -162,6 +171,7 @@ export default function MainPage() {
             booking={selectedBooking} 
             refreshBookings={fetchBookings}
             onDeletedBooking={handleDeletedBookingCompleted}
+            handleEditedBookingCompleted={handleEditedBookingCompleted}
         />      
 
 </>
