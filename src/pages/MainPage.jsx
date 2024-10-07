@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import nigiriImage from '../assets/nigiri.jpg';
 import sakuraImage from '../assets/sakura.png';
+import ViewBookingModal from "../components/ViewBookingModal"
 
 import './MainPage.css';
 import axios from 'axios';
@@ -21,6 +22,9 @@ export default function MainPage() {
     const [bookings, setBookings] = useState([])
     const [confirmationMessage, setConfirmationMessage] = useState(''); 
     const [showConfirmation, setShowConfirmation] = useState(false); 
+
+    const [selectedBooking, setSelectedBooking] = useState(null); 
+    const [showBookingModal, setShowBookingModal] = useState(false);
     
         const fetchBookings = async () => {
             try {
@@ -47,8 +51,27 @@ export default function MainPage() {
       return () => clearTimeout(timer);
     }, []);
 
+    const handleViewDetails = (booking) => {
+        setSelectedBooking(booking); // Set the selected booking
+        setShowBookingModal(true); // Open the view details modal
+    };
+
+    const handleCloseBookingModal = () => {
+        setSelectedBooking(null); // Clear the selected booking
+        setShowBookingModal(false); // Close the modal
+    };
+
     const handleBookingCompleted = () => {
         setConfirmationMessage("Booking completed! See you soon!");
+        setShowConfirmation(true);
+
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 5000);
+    };
+
+    const handleDeletedBookingCompleted = () => {
+        setConfirmationMessage("Booking deleted! We're sorry you couldn't make it!");
         setShowConfirmation(true);
 
         setTimeout(() => {
@@ -118,7 +141,7 @@ export default function MainPage() {
                                     <Card.Text>Date: {booking.date}</Card.Text>
                                     <Card.Text>Date: {booking.date}</Card.Text>
                                     <Card.Text>Description: {booking.description}</Card.Text>
-                                    <Button variant="danger">View Details</Button>
+                                    <Button variant="danger" onClick={() => handleViewDetails(booking)} >View Details</Button>
                                 </Card.Body>
                             </Card>
                         </Col>
@@ -132,6 +155,14 @@ export default function MainPage() {
         handleClose={handleClose} 
         refreshBookings={fetchBookings}
         onBookingCompleted={handleBookingCompleted}  />
+
+<ViewBookingModal 
+            show={showBookingModal} 
+            handleClose={handleCloseBookingModal} 
+            booking={selectedBooking} 
+            refreshBookings={fetchBookings}
+            onDeletedBooking={handleDeletedBookingCompleted}
+        />      
 
 </>
 )
