@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import PhoneInput from 'react-phone-input-2'; // Import the PhoneInput component
 import 'react-phone-input-2/lib/style.css';
 
-function ReserveModal({ show, handleClose }) {
+function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }) {
 
     const [formData, setFormData] = useState({
         title: '',
@@ -23,12 +23,15 @@ function ReserveModal({ show, handleClose }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post('/api/bookings', formData); // Adjust the endpoint as needed
-          // Optionally call a function to update the bookings in the parent component
-          handleClose(); // Close the modal
+          const response = await axios.post('https://35e2a87b-a991-4a80-ba94-a137ad78a70d-00-iz64krywffiw.pike.replit.dev/bookings', formData);
+
+          console.log('Booking created', response.data)
+          refreshBookings();
+          onBookingCompleted()
+          handleClose(); 
         } catch (error) {
           console.error('Error creating booking:', error);
-          // Handle error (e.g., show a notification)
+          
         }
       };
 

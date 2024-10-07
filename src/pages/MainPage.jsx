@@ -1,17 +1,43 @@
-import { Button } from "react-bootstrap";
+import { Alert, Button, Card } from "react-bootstrap";
 import ReserveModal from "../components/ReserveModal";
 import { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import nigiriImage from '../assets/nigiri.jpg';
+import sakuraImage from '../assets/sakura.png';
+
 import './MainPage.css';
+import axios from 'axios';
+
 
 export default function MainPage() {
+
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
     const [showImage, setShowImage] = useState(false);
+    const [loading, setLoading] = useState(true)
+    const [bookings, setBookings] = useState([])
+    const [confirmationMessage, setConfirmationMessage] = useState(''); 
+    const [showConfirmation, setShowConfirmation] = useState(false); 
+    
+        const fetchBookings = async () => {
+            try {
+                const response = await axios.get('https://35e2a87b-a991-4a80-ba94-a137ad78a70d-00-iz64krywffiw.pike.replit.dev/bookings')
+                setBookings(response.data);
+                setLoading(false)
+            } catch (error) {
+                console.error('Error fetching bookgins:', error)
+                setLoading(false)
+            }
+        }
+    
+
+    useEffect(() => {
+        fetchBookings();
+}, []);
+
 
     useEffect(() => {
       const timer = setTimeout(() => {
@@ -21,9 +47,19 @@ export default function MainPage() {
       return () => clearTimeout(timer);
     }, []);
 
+    const handleBookingCompleted = () => {
+        setConfirmationMessage("Booking completed! See you soon!");
+        setShowConfirmation(true);
+
+        setTimeout(() => {
+            setShowConfirmation(false);
+        }, 5000);
+    };
+
     return (
+        <>
         <Container fluid className="p-0 m-0">
-            {/* Top Row for Image */}
+          
             <Row className="vh-50">
                 <Col className="p-0">
                     <img 
@@ -33,8 +69,11 @@ export default function MainPage() {
                     />
                 </Col>
             </Row>
+            </Container>
 
-            {/* Bottom Row for Content */}
+
+            <Container className="mt-5">
+
             <Row className="vh-50 d-flex align-items-center justify-content-center">
                 <Col className="text-center">
                     <h1 className="mt-5 mb-4">
@@ -47,6 +86,53 @@ export default function MainPage() {
                     <ReserveModal show={showModal} handleClose={handleClose} />
                 </Col>
             </Row>
+
+            {showConfirmation && (
+                <Row>
+                    <Col>
+                        <Alert variant="success" className="text-center">
+                            {confirmationMessage}
+                        </Alert>
+                    </Col>
+                </Row>
+            )}
+
+            <Row>
+                <Col>
+            <h1 className="mb-5">Bookings List</h1>
+            </Col>
+
+            </Row>
+            <Row>
+                {loading ? (
+                    <p>Loading bookings...</p> 
+                ) : bookings.length === 0 ? (
+                    <p>No bookings available</p> 
+                ) : (
+                    bookings.map((booking) => (
+                        <Col key={booking.id} xs={12} md={4} lg={3} className="mb-4">
+                            <Card >
+                                <Card.Img variant="top" src={sakuraImage} className="img-fluid"/>
+                                <Card.Body>
+                                    <Card.Title>{booking.title}</Card.Title>
+                                    <Card.Text>Date: {booking.date}</Card.Text>
+                                    <Card.Text>Date: {booking.date}</Card.Text>
+                                    <Card.Text>Description: {booking.description}</Card.Text>
+                                    <Button variant="danger">View Details</Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))
+                )}
+            </Row>
         </Container>
-    );
-}
+
+        <ReserveModal 
+        show={showModal} 
+        handleClose={handleClose} 
+        refreshBookings={fetchBookings}
+        onBookingCompleted={handleBookingCompleted}  />
+
+</>
+)
+            }
