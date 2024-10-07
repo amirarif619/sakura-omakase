@@ -26,6 +26,16 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
           const response = await axios.post('https://35e2a87b-a991-4a80-ba94-a137ad78a70d-00-iz64krywffiw.pike.replit.dev/bookings', formData);
 
           console.log('Booking created', response.data)
+
+          setFormData({
+            title: '',
+            description: '',
+            date: '',
+            time: '',
+            phone_number: '',
+            email: ''
+          });
+          
           refreshBookings();
           onBookingCompleted()
           handleClose(); 
@@ -45,19 +55,24 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
           <Form onSubmit={handleSubmit}>
 
 
-            <Form.Group controlId="formTitle">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="text"
+            <Form.Group  className="mb-4" controlId="formBranch">
+              <Form.Label>Restaurant Branch</Form.Label>
+              <Form.Select
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
                 required
-              />
+              >
+
+                <option value="">Select a branch</option>
+                <option value="Sakura Omakase - The Troika">Sakura Omakase - The Troika</option>
+                <option value="Sakura Omakase - Pavilion">Sakura Omakase - Pavilion</option>
+                <option value="Sakura Omakase - Menara KL">Sakura Omakase - Menara KL</option>
+            </Form.Select>
             </Form.Group>
 
-            <Form.Group controlId="formDescription">
-              <Form.Label>Description</Form.Label>
+            <Form.Group  className="mb-4" controlId="formDescription">
+              <Form.Label>Special Instructions*</Form.Label>
               <Form.Control
                 type="text"
                 name="description"
@@ -67,7 +82,7 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
               />
             </Form.Group>
 
-            <Form.Group controlId="formDate">
+            <Form.Group  className="mb-4" controlId="formDate">
               <Form.Label>Date</Form.Label>
               <Form.Control
                 type="date"
@@ -78,7 +93,7 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
               />
             </Form.Group>
 
-            <Form.Group controlId="formTime">
+            <Form.Group  className="mb-4" controlId="formTime">
               <Form.Label>Time</Form.Label>
               <Form.Control
                 type="time"
@@ -89,7 +104,7 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
               />
             </Form.Group>
 
-            <Form.Group controlId="formPhoneNumber">
+            <Form.Group  className="mb-4" controlId="formPhoneNumber">
               <Form.Label>Phone Number</Form.Label>
               <PhoneInput
              country={'my'} 
@@ -99,7 +114,7 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
             />
             </Form.Group>
 
-            <Form.Group controlId="formEmail">
+            <Form.Group  className="mb-3"controlId="formEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
@@ -108,6 +123,9 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
                 onChange={handleChange}
                 required
               />
+               <Form.Text  className="text-muted mt-4">
+    *While we will make every effort to accommodate special requests, we cannot guarantee their fulfillment. For any specific dietary requirements, kindly detail them in the Special Instructions section.
+  </Form.Text>
             </Form.Group>
 
         

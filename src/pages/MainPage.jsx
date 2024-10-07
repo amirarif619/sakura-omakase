@@ -5,7 +5,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import nigiriImage from '../assets/nigiri.jpg';
-import sakuraImage from '../assets/sakura.png';
+import downtownImage from '../assets/Downtown.png';
+import riversideImage from '../assets/Riverside.png';
+import uptownImage from '../assets/Uptown.png';
 import ViewBookingModal from "../components/ViewBookingModal"
 
 import './MainPage.css';
@@ -13,6 +15,15 @@ import axios from 'axios';
 
 
 export default function MainPage() {
+
+
+    const branchImages = {
+        "Sakura Omakase - The Troika": downtownImage,
+        "Sakura Omakase - Pavilion": uptownImage,
+        "Sakura Omakase - Menara KL": riversideImage,
+    };
+    
+
 
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
@@ -143,14 +154,16 @@ export default function MainPage() {
                 ) : (
                     bookings.map((booking) => (
                         <Col key={booking.id} xs={12} md={4} lg={3} className="mb-4">
-                            <Card >
-                                <Card.Img variant="top" src={sakuraImage} className="img-fluid"/>
-                                <Card.Body>
-                                    <Card.Title>{booking.title}</Card.Title>
+                            <Card className="fixed-card" >
+                                <Card.Img 
+                                variant="top" 
+                                src={branchImages[booking.title]}
+                                className="fixed-img"/>
+                                <Card.Body className="fixed-card-body">
+                                    <Card.Title className="mb-3">{booking.title}</Card.Title>
                                     <Card.Text>Date: {booking.date}</Card.Text>
-                                    <Card.Text>Date: {booking.date}</Card.Text>
-                                    <Card.Text>Description: {booking.description}</Card.Text>
-                                    <Button variant="danger" onClick={() => handleViewDetails(booking)} >View Details</Button>
+                                    <Card.Text>Time: {booking.time} PM</Card.Text>
+                                    <Button className="mt-3" variant="danger" onClick={() => handleViewDetails(booking)} >View Details</Button>
                                 </Card.Body>
                             </Card>
                         </Col>

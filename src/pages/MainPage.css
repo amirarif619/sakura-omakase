@@ -8,3 +8,22 @@
     transition: opacity 0.24s ease-in; /* Ensure this matches the fade-in duration */
   }
   
+ /* MainPage.css */
+
+/* Card styles */
+.fixed-card {
+  height: 100%; /* Ensure the card takes up full height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ensures content like button stays at the bottom */
+  max-width: 18rem; /* Set a fixed maximum width */
+}
+
+/* Image styles */
+.fixed-img {
+  height: 200px; /* Fixed image height */
+  width: 100%; /* Ensures the image fills the card width */
+  object-fit: fill; /* Forces the image to fill the container, ignoring aspect ratio */
+}
+
+

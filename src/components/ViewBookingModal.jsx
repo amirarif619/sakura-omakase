@@ -75,16 +75,20 @@ function ViewBookingModal({ show, handleClose, booking, refreshBookings, onDelet
                 {isEditing ? (
                   
                     <Form>
-                        <Form.Group controlId="formTitle">
-                            <Form.Label>Title</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="title"
-                                value={formData.title}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Form.Group>
+                        <Form.Group controlId="formBranch">
+    <Form.Label>Restaurant Branch</Form.Label>
+    <Form.Select
+        name="title"  
+        value={formData.title}
+        onChange={handleChange}
+        required
+    >
+        <option value="">Select a branch</option>
+        <option value="Sakura Omakase - The Troika">Sakura Omakase - The Troika</option>
+        <option value="Sakura Omakase - Pavilion">Sakura Omakase - Pavilion</option>
+        <option value="Sakura Omakase - Menara KL">Sakura Omakase - Menara KL</option>
+    </Form.Select>
+</Form.Group>
 
                         <Form.Group controlId="formDescription">
                             <Form.Label>Description</Form.Label>
