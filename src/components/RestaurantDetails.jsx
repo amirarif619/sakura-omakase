@@ -21,12 +21,11 @@ const RestaurantDetails = () => {
           <h1 className="mb-3">Dining details</h1>
 
           <div style={{ display: 'flex', alignItems: 'center' }}>
-    {/* FontAwesome Icon for Map Marker */}
+   
     <FontAwesomeIcon icon={faMapMarkerAlt} style={{ marginRight: '1px', color: 'grey' }} />
-    {/* Location Text */}
+  
     <h6 style={{ color: 'grey', margin: '0 15px 0' }}>Kuala Lumpur, MY</h6>
 
-    {/* Optional Utensils Icon */}
     <FontAwesomeIcon icon={faUtensils} style={{ marginLeft: '15px', color: 'grey' }} />
     <h6 style={{ color: 'grey', margin: '12px' }}> Sushi, Fine Dining</h6>
 
@@ -68,6 +67,7 @@ const RestaurantDetails = () => {
             </tbody>
           </Table>
         </Col>
+        
       </Row>
     </Container>
   );
