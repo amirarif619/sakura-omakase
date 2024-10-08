@@ -25,7 +25,7 @@ export default function MainNavbar() {
          
 
           <Nav className="ms-auto">
-            <Nav.Link href="#">Takeaway/Delivery</Nav.Link>
+            
             <Nav.Link href="#">Log in</Nav.Link>
             <Nav.Link href="#">Sign up</Nav.Link>
           </Nav>

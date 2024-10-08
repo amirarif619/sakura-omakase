@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import nigiriImage from '../assets/nigiri.jpg';
+
 import downtownImage from '../assets/Downtown.png';
 import riversideImage from '../assets/Riverside.png';
 import uptownImage from '../assets/Uptown.png';
@@ -14,6 +14,7 @@ import MainNavbar from "../components/Navbar";
 import './MainPage.css';
 import axios from 'axios';
 import RestaurantDetails from "../components/RestaurantDetails";
+import CarouselMain from "../components/Carousel.Main";
 
 
 export default function MainPage() {
@@ -30,7 +31,7 @@ export default function MainPage() {
     const [showModal, setShowModal] = useState(false);
     const handleShow = () => setShowModal(true);
     const handleClose = () => setShowModal(false);
-    const [showImage, setShowImage] = useState(false);
+    
     const [loading, setLoading] = useState(true)
     const [bookings, setBookings] = useState([])
     const [confirmationMessage, setConfirmationMessage] = useState(''); 
@@ -56,13 +57,9 @@ export default function MainPage() {
 }, []);
 
 
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setShowImage(true);
-      }, 500);
+   
 
-      return () => clearTimeout(timer);
-    }, []);
+      
 
     const handleViewDetails = (booking) => {
         setSelectedBooking(booking); //
@@ -105,15 +102,11 @@ export default function MainPage() {
         <>
         <MainNavbar/>
         <Container fluid className="p-0 m-0">
-          
+          <CarouselMain />
             <Row className="vh-50">
-                <Col className="p-0">
-                    <img 
-                        src={nigiriImage} 
-                        alt="Sushi Nigiri" 
-                        className={`img-fluid w-100 h-100 ${showImage ? 'fade-in' : 'fade-out'}`} 
-                    />
-                </Col>
+                
+                    
+                
             </Row>
             </Container>
 

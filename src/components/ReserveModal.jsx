@@ -47,11 +47,17 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
 
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal 
+        fullscreen="sm-down"
+        dialogClassName="modal-dialog-centered" 
+        show={show} 
+        onHide={handleClose}
+        style={{ overflowY: 'auto', maxHeight: '100vh', width: '100%' }}
+        >
         <Modal.Header closeButton>
-          <Modal.Title>🍣 Make a Reservation 🍣</Modal.Title>
+          <Modal.Title className=" w-100 text-center">🍣 Make a Reservation 🍣</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ maxHeight: '80vh', overflowY: 'auto' }}>
           <Form onSubmit={handleSubmit}>
 
 
@@ -127,9 +133,6 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
     *While we will make every effort to accommodate special requests, we cannot guarantee their fulfillment. For any specific dietary requirements, kindly detail them in the Special Instructions section.
   </Form.Text>
             </Form.Group>
-
-        
-
 
 
             <Button className="mt-3 mb-3" type="submit" variant="danger">Reserve</Button>
