@@ -151,7 +151,7 @@ function ViewBookingModal({ show, handleClose, booking, refreshBookings, onDelet
                         <p><strong>Title:</strong> {booking.title}</p>
                         <p><strong>Date:</strong> {booking.date}</p>
                         <p><strong>Time:</strong> {booking.time}</p>
-                        <p><strong>Description:</strong> {booking.description}</p>
+                        <p><strong>Special Instructions:</strong> {booking.description}</p>
                         <p><strong>Phone Number:</strong> {booking.phone_number}</p>
                         <p><strong>Email:</strong> {booking.email}</p>
                     </>
