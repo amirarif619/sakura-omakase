@@ -9,7 +9,8 @@ import downtownImage from '../assets/Downtown.png';
 import riversideImage from '../assets/Riverside.png';
 import uptownImage from '../assets/Uptown.png';
 import ViewBookingModal from "../components/ViewBookingModal"
-
+import Footer from '../components/Footer';
+import MainNavbar from "../components/Navbar";
 import './MainPage.css';
 import axios from 'axios';
 import RestaurantDetails from "../components/RestaurantDetails";
@@ -102,6 +103,7 @@ export default function MainPage() {
 
     return (
         <>
+        <MainNavbar/>
         <Container fluid className="p-0 m-0">
           
             <Row className="vh-50">
@@ -121,7 +123,7 @@ export default function MainPage() {
             <Row className="vh-50 d-flex align-items-center justify-content-center">
                 <Col className="text-center">
                     <h1 className="mt-5 mb-4">
-                        Elevate your dining experience at <strong>Sakura Omakase</strong>. 
+                        Elevate your dining experience at <strong>SAKURA OMAKASE</strong>. 
                         Reserve your table now for a night of exquisite tastes and unforgettable moments!
                     </h1>
                     <Button className="mt-5 mb-5" onClick={handleShow} variant="danger">
@@ -188,7 +190,7 @@ export default function MainPage() {
             onDeletedBooking={handleDeletedBookingCompleted}
             handleEditedBookingCompleted={handleEditedBookingCompleted}
         />      
-
+    <Footer/>
 </>
 )
             }
