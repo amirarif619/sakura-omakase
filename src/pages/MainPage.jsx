@@ -119,7 +119,7 @@ export default function MainPage() {
                         Elevate your dining experience at <strong>SAKURA OMAKASE</strong>. 
                         Reserve your table now for a night of exquisite tastes and unforgettable moments!
                     </h1>
-                    <Button className="mt-5 mb-5" onClick={handleShow} variant="danger">
+                    <Button size="lg" className="mt-5 mb-5" onClick={handleShow} variant="danger">
                         Make a reservation
                     </Button>
                     <ReserveModal show={showModal} handleClose={handleClose} />
