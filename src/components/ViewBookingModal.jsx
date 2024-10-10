@@ -43,7 +43,7 @@ function ViewBookingModal({ show, handleClose, booking, refreshBookings, onDelet
     
     const handleSave = async () => {
         try {
-            await axios.put(`https://35e2a87b-a991-4a80-ba94-a137ad78a70d-00-iz64krywffiw.pike.replit.dev/bookings/${booking.id}`, formData);
+            await axios.put(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings/${booking.id}`, formData);
             refreshBookings(); 
             handleClose(); 
             setIsEditing(false); 
@@ -56,7 +56,7 @@ function ViewBookingModal({ show, handleClose, booking, refreshBookings, onDelet
     const handleDelete = async () => {
         if (window.confirm('Are you sure you want to cancel this booking?')) {
             try {
-                await axios.delete(`https://35e2a87b-a991-4a80-ba94-a137ad78a70d-00-iz64krywffiw.pike.replit.dev/bookings/${booking.id}`);
+                await axios.delete(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings/${booking.id}`);
                 refreshBookings(); 
                 onDeletedBooking()
                 handleClose(); 

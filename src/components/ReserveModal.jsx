@@ -23,7 +23,7 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post('https://35e2a87b-a991-4a80-ba94-a137ad78a70d-00-iz64krywffiw.pike.replit.dev/bookings', formData);
+          const response = await axios.post('https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings', formData);
 
           console.log('Booking created', response.data)
 

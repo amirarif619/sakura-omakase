@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 import downtownImage from '../assets/Downtown.png';
 import riversideImage from '../assets/Riverside.png';
 import uptownImage from '../assets/Uptown.png';
@@ -15,7 +14,9 @@ import './MainPage.css';
 import axios from 'axios';
 import RestaurantDetails from "../components/RestaurantDetails";
 import CarouselMain from "../components/Carousel.Main";
-
+import LoginModal from "../components/LoginModal"
+import { auth } from "../firebase"
+import { onAuthStateChanged } from 'firebase/auth'
 
 export default function MainPage() {
 
@@ -26,11 +27,12 @@ export default function MainPage() {
         "Sakura Omakase - Menara KL": riversideImage,
     };
     
-
+    const [user, setUser] = useState(null);
+    
+    const [showLoginModal, setShowLoginModal] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
-    const handleShow = () => setShowModal(true);
-    const handleClose = () => setShowModal(false);
+   
     
     const [loading, setLoading] = useState(true)
     const [bookings, setBookings] = useState([])
@@ -40,27 +42,47 @@ export default function MainPage() {
     const [selectedBooking, setSelectedBooking] = useState(null); 
     const [showBookingModal, setShowBookingModal] = useState(false);
     
-        const fetchBookings = async () => {
-            try {
-                const response = await axios.get('https://35e2a87b-a991-4a80-ba94-a137ad78a70d-00-iz64krywffiw.pike.replit.dev/bookings')
-                setBookings(response.data);
-                setLoading(false)
+   
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+          setUser(currentUser);
+        });
+        return () => unsubscribe(); // Clean up the listener on component unmount
+      }, []);
+
+    
+      const fetchBookings = async () => {
+          try {
+              const response = await axios.get('https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings')
+              setBookings(response.data);
+              setLoading(false)
             } catch (error) {
                 console.error('Error fetching bookgins:', error)
                 setLoading(false)
             }
         }
-    
-
-    useEffect(() => {
+        
+        
+        
+        useEffect(() => {
         fetchBookings();
-}, []);
+    }, [])
 
+const handleMakeReservation = () => {
+    if (!user) {
+      setShowLoginModal(true);  // Show login modal if not logged in
+    } else {
+      setShowModal(true);  // Show reservation modal if logged in
+    }
+  };
+
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);  // Close login modal after successful login
+    setShowModal(true);  // Directly open reservation modal after login
+  };
 
    
-
-      
-
     const handleViewDetails = (booking) => {
         setSelectedBooking(booking); //
         setShowBookingModal(true); // Open the view details modal
@@ -100,7 +122,9 @@ export default function MainPage() {
 
     return (
         <>
-        <MainNavbar/>
+        <MainNavbar 
+        onShowLogin={() => setShowLoginModal(true)} 
+        />
         <Container fluid className="p-0 m-0">
           <CarouselMain />
             <Row className="vh-50">
@@ -119,10 +143,16 @@ export default function MainPage() {
                         Elevate your dining experience at <strong>SAKURA OMAKASE</strong>. 
                         Reserve your table now for a night of exquisite tastes and unforgettable moments!
                     </h1>
-                    <Button size="lg" className="mt-5 mb-5" onClick={handleShow} variant="danger">
+                    <Button size="lg" className="mt-5 mb-5" onClick={handleMakeReservation} variant="danger">
                         Make a reservation
                     </Button>
-                    <ReserveModal show={showModal} handleClose={handleClose} />
+                    <ReserveModal 
+                    show={showModal} 
+                    handleClose={() => setShowModal(false)}
+                    refreshBookings={fetchBookings} 
+                    onBookingCompleted={handleBookingCompleted} />
+                    <LoginModal show={showLoginModal} handleClose={() => setShowLoginModal(false)} onLoginSuccess={handleLoginSuccess} />
+                    
                 </Col>
             </Row>
             
@@ -169,11 +199,7 @@ export default function MainPage() {
             </Row>
         </Container>
 
-        <ReserveModal 
-        show={showModal} 
-        handleClose={handleClose} 
-        refreshBookings={fetchBookings}
-        onBookingCompleted={handleBookingCompleted}  />
+     
 
 <ViewBookingModal 
             show={showBookingModal} 

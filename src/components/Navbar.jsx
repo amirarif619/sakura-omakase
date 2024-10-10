@@ -1,8 +1,31 @@
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import mangekyoLogo from '../assets/mangekyo.png'
+import { useState, useEffect } from 'react';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../firebase'; 
 
-export default function MainNavbar() {
+export default function MainNavbar({ onShowLogin, onShowSignUp}) {
+  const [user, setUser] = useState(null);
+ 
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe(); // Clean up the listener on component unmount
+  }, []);
+
+  // Handle log out
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null); // Reset the user state after successful logout
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -22,12 +45,22 @@ export default function MainNavbar() {
 
         <Navbar.Toggle aria-controls="navbarNav" />
         <Navbar.Collapse id="navbarNav">
-         
-
-          <Nav className="ms-auto">
+         <Nav className="ms-auto">
             
-            <Nav.Link href="#">Log in</Nav.Link>
-            <Nav.Link href="#">Sign up</Nav.Link>
+         {!user ? (
+            <>
+                  <Nav.Link href="#" onClick={onShowLogin}>Log In</Nav.Link>
+                <Nav.Link href="#" onClick={onShowSignUp}>Sign Up</Nav.Link>
+              </>
+            ) : (
+              // Show email and logout button if user is logged in
+              <>
+                <Nav.Link disabled>{user.email}</Nav.Link>
+                <Button variant="outline-danger" onClick={handleLogout}>Log Out</Button>
+              </>
+            )}
+
+
           </Nav>
         </Navbar.Collapse>
       </Container>
