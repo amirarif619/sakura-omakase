@@ -72,7 +72,7 @@ const RestaurantDetails = () => {
             </tbody>
           </Table>
         </Col>
-      <h8 className="text-muted mt-2 mb-5">* Please arrive with your full party five minutes before your reservation to ensure a seamless and enjoyable experience </h8>
+      <h6 className="text-muted mt-2 mb-5">* Please arrive with your full party five minutes before your reservation to ensure a seamless and enjoyable experience </h6>
       </Row>
     </Container>
 

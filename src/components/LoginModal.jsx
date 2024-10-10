@@ -12,8 +12,15 @@ const LoginModal = ({ show, handleClose, onLoginSuccess }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      if (user.email === 'admin@admin.com') {
+        window.location.href = '/admin';
+      } else {
       onLoginSuccess(); 
+      }
     } catch {
       setError('Login failed. Please check your credentials.');
     }
