@@ -1,4 +1,4 @@
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import mangekyoLogo from '../assets/mangekyo.png'
 import { useState, useEffect } from 'react';
@@ -53,10 +53,10 @@ export default function MainNavbar({ onShowLogin, onShowSignUp}) {
                 <Nav.Link href="#" onClick={onShowSignUp}>Sign Up</Nav.Link>
               </>
             ) : (
-              // Show email and logout button if user is logged in
+            
               <>
                 <Nav.Link disabled>{user.email}</Nav.Link>
-                <Button variant="outline-danger" onClick={handleLogout}>Log Out</Button>
+                <Nav.Link href="#" onClick={handleLogout}>Log Out</Nav.Link>
               </>
             )}
 

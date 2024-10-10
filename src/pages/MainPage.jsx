@@ -46,15 +46,23 @@ export default function MainPage() {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-          setUser(currentUser);
-        });
+            if (currentUser) {
+                setUser(currentUser);
+                fetchBookings(currentUser.uid); // Fetch bookings when user is logged in
+              } else {
+                setUser(null);
+                setBookings([]); // Clear bookings when user logs out
+              }
+            });
         return () => unsubscribe(); // Clean up the listener on component unmount
       }, []);
 
     
       const fetchBookings = async () => {
+        if (!user) return;
+        
           try {
-              const response = await axios.get('https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings')
+              const response = await axios.get(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings?user_id=${user.uid}`)
               setBookings(response.data);
               setLoading(false)
             } catch (error) {
@@ -66,8 +74,9 @@ export default function MainPage() {
         
         
         useEffect(() => {
+            if (user) 
         fetchBookings();
-    }, [])
+    }, [user])
 
 const handleMakeReservation = () => {
     if (!user) {
@@ -150,7 +159,9 @@ const handleMakeReservation = () => {
                     show={showModal} 
                     handleClose={() => setShowModal(false)}
                     refreshBookings={fetchBookings} 
-                    onBookingCompleted={handleBookingCompleted} />
+                    onBookingCompleted={handleBookingCompleted}
+                    userId={user ? user.uid : null}
+                     />
                     <LoginModal show={showLoginModal} handleClose={() => setShowLoginModal(false)} onLoginSuccess={handleLoginSuccess} />
                     
                 </Col>
@@ -188,8 +199,16 @@ const handleMakeReservation = () => {
                                 className="fixed-img"/>
                                 <Card.Body className="fixed-card-body">
                                     <Card.Title className="mb-3">{booking.title}</Card.Title>
-                                    <Card.Text>Date: {booking.date}</Card.Text>
-                                    <Card.Text>Time: {booking.time} PM</Card.Text>
+                                        <Card.Text>
+                                        <i className="bi bi-calendar-check me-3">
+                                            </i>{booking.date}
+                                    </Card.Text>
+
+
+
+                                    <Card.Text>
+                                    <i className="bi bi-clock me-3"></i>
+                                        {booking.time} </Card.Text>
                                     <Button className="mt-3" variant="danger" onClick={() => handleViewDetails(booking)} >View Details</Button>
                                 </Card.Body>
                             </Card>

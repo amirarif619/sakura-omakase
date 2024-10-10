@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import PhoneInput from 'react-phone-input-2'; // Import the PhoneInput component
 import 'react-phone-input-2/lib/style.css';
 
-function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }) {
+function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted, userId }) {
 
     const [formData, setFormData] = useState({
         title: '',
@@ -23,7 +23,13 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted }
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post('https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings', formData);
+
+          const bookingData = {
+            ...formData,
+            user_id: userId, 
+        };
+
+          const response = await axios.post('https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings', bookingData);
 
           console.log('Booking created', response.data)
 

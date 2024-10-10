@@ -45,7 +45,7 @@ const LoginModal = ({ show, handleClose, onLoginSuccess }) => {
   return (
     <Modal show={show} onHide={handleCloseModal} centered>
       <Modal.Header closeButton>
-        <Modal.Title>{isSignUp ? 'Sign Up' : 'Log In'}</Modal.Title>
+        <Modal.Title className="w-100 text-center">{isSignUp ? 'Sign Up' : 'Log In'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={isSignUp ? handleSignUp : handleLogin}>
@@ -60,7 +60,7 @@ const LoginModal = ({ show, handleClose, onLoginSuccess }) => {
             />
           </Form.Group>
           <Form.Group controlId="formPassword">
-            <Form.Label>Password</Form.Label>
+            <Form.Label className="mt-4">Password</Form.Label>
             <Form.Control 
               type="password"
               value={password}
@@ -70,7 +70,7 @@ const LoginModal = ({ show, handleClose, onLoginSuccess }) => {
             />
           </Form.Group>
           {error && <p className="text-danger">{error}</p>}
-          <Button variant="primary" type="submit">
+          <Button className="mt-4" variant="primary" type="submit">
           {isSignUp ? 'Sign Up' : 'Log In'}
           </Button>
         </Form>
