@@ -43,7 +43,19 @@ export default function MainPage() {
     const [showBookingModal, setShowBookingModal] = useState(false);
     
    
-
+    const fetchBookings = async () => {
+      if (!user) return;
+      
+        try {
+            const response = await axios.get(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings?user_id=${user.uid}`)
+            setBookings(response.data);
+            setLoading(false)
+          } catch (error) {
+              console.error('Error fetching bookgins:', error)
+              setLoading(false)
+          }
+      }
+    
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
@@ -58,18 +70,6 @@ export default function MainPage() {
       }, []);
 
     
-      const fetchBookings = async () => {
-        if (!user) return;
-        
-          try {
-              const response = await axios.get(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings?user_id=${user.uid}`)
-              setBookings(response.data);
-              setLoading(false)
-            } catch (error) {
-                console.error('Error fetching bookgins:', error)
-                setLoading(false)
-            }
-        }
         
         
         
