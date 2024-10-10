@@ -2,10 +2,10 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Form, Button} from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
-import PhoneInput from 'react-phone-input-2'; // Import the PhoneInput component
+import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
-function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted, userId }) {
+function ReserveModal({ show, handleClose, onBookingCompleted, userId }) {
 
     const [formData, setFormData] = useState({
         title: '',
@@ -32,7 +32,8 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted, 
           const response = await axios.post('https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings', bookingData);
 
           console.log('Booking created', response.data)
-
+          onBookingCompleted(response.data);
+          
           setFormData({
             title: '',
             description: '',
@@ -42,8 +43,7 @@ function ReserveModal({ show, handleClose, refreshBookings, onBookingCompleted, 
             email: ''
           });
           
-          refreshBookings();
-          onBookingCompleted()
+        
           handleClose(); 
         } catch (error) {
           console.error('Error creating booking:', error);

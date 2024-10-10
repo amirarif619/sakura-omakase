@@ -43,15 +43,14 @@ export default function MainPage() {
     const [showBookingModal, setShowBookingModal] = useState(false);
     
    
-    const fetchBookings = async () => {
-      if (!user) return;
+    const fetchBookings = async (uid) => {
       
         try {
-            const response = await axios.get(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings?user_id=${user.uid}`)
+            const response = await axios.get(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings?user_id=${uid}`)
             setBookings(response.data);
-            setLoading(false)
           } catch (error) {
               console.error('Error fetching bookgins:', error)
+          } finally {
               setLoading(false)
           }
       }
@@ -60,49 +59,56 @@ export default function MainPage() {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
                 setUser(currentUser);
-                fetchBookings(currentUser.uid); // Fetch bookings when user is logged in
+                fetchBookings(currentUser.uid); 
               } else {
                 setUser(null);
-                setBookings([]); // Clear bookings when user logs out
-              }
-            });
-        return () => unsubscribe(); // Clean up the listener on component unmount
+                setBookings([]); 
+                setLoading(false)
+            }
+        });
+        return () => unsubscribe(); 
       }, []);
 
-    
+      const refreshBookings = async () => {
+        if (user) {
+            try {
+                const response = await axios.get(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings?user_id=${user.uid}`);
+                setBookings(response.data);
+            } catch (error) {
+                console.error('Error fetching bookings:', error);
+            }
+        }
+    };
         
         
-        
-        useEffect(() => {
-            if (user) 
-        fetchBookings();
-    }, [user])
-
 const handleMakeReservation = () => {
     if (!user) {
-      setShowLoginModal(true);  // Show login modal if not logged in
+      setShowLoginModal(true);  
     } else {
-      setShowModal(true);  // Show reservation modal if logged in
+      setShowModal(true);  
     }
   };
 
   const handleLoginSuccess = () => {
-    setShowLoginModal(false);  // Close login modal after successful login
-    setShowModal(true);  // Directly open reservation modal after login
+    setShowLoginModal(false);  
+    setShowModal(true);  
   };
 
    
     const handleViewDetails = (booking) => {
-        setSelectedBooking(booking); //
-        setShowBookingModal(true); // Open the view details modal
+        setSelectedBooking(booking); 
+        setShowBookingModal(true); 
     };
 
     const handleCloseBookingModal = () => {
-        setSelectedBooking(null); // Clear the selected booking
-        setShowBookingModal(false); // Close the modal
+        setSelectedBooking(null); 
+        setShowBookingModal(false);
+        refreshBookings(); 
     };
 
-    const handleBookingCompleted = () => {
+    const handleBookingCompleted = (newBooking) => {
+        setBookings((prevBookings) => [...prevBookings, newBooking]);
+
         setConfirmationMessage("Booking completed! See you soon!");
         setShowConfirmation(true);
 
@@ -111,24 +117,36 @@ const handleMakeReservation = () => {
         }, 5000);
     };
 
-    const handleDeletedBookingCompleted = () => {
+    const handleDeletedBookingCompleted = (deletedBookingId) => {
+        setBookings((prevBookings) => 
+            prevBookings.filter((booking) =>
+                 booking.id !== deletedBookingId)); 
+    
         setConfirmationMessage("Booking deleted! We're sorry you couldn't make it!");
         setShowConfirmation(true);
-
+    
         setTimeout(() => {
             setShowConfirmation(false);
         }, 5000);
     };
 
-    const handleEditedBookingCompleted = () => {
+
+    const handleEditedBookingCompleted = (updatedBooking) => { 
+       
+        setBookings((prevBookings) => 
+            prevBookings.map((booking) => 
+                booking.id === updatedBooking.id ? updatedBooking : booking
+            )
+        );
+        console.log("Bookings after edit:", bookings);
+        refreshBookings()
         setConfirmationMessage("Booking updated successfully! See you soon!");
         setShowConfirmation(true);
     
         setTimeout(() => {
             setShowConfirmation(false);
-        }, 5000); // Hide the confirmation after 5 seconds
+        }, 5000); 
     };
-
     return (
         <>
         <MainNavbar 
@@ -185,11 +203,13 @@ const handleMakeReservation = () => {
 
             </Row>
             <Row>
-                {loading ? (
-                    <p>Loading bookings...</p> 
-                ) : bookings.length === 0 ? (
-                    <p>No bookings available</p> 
-                ) : (
+            {loading ? (
+                        <p>Loading bookings...</p>
+                    ) : !user ? (
+                        <p>Please log in to see your bookings.</p> 
+                    ) : bookings.length === 0 ? (
+                        <p>No bookings available</p>
+                    ) : (
                     bookings.map((booking) => (
                         <Col key={booking.id} xs={12} md={4} lg={3} className="mb-4">
                             <Card className="fixed-card" >
@@ -224,9 +244,9 @@ const handleMakeReservation = () => {
             show={showBookingModal} 
             handleClose={handleCloseBookingModal} 
             booking={selectedBooking} 
-            refreshBookings={fetchBookings}
-            onDeletedBooking={handleDeletedBookingCompleted}
-            handleEditedBookingCompleted={handleEditedBookingCompleted}
+           
+            onDeletedBooking={(bookingId) => handleDeletedBookingCompleted(bookingId)} 
+            handleEditedBookingCompleted={(updatedBooking) => handleEditedBookingCompleted(updatedBooking)}
         />      
     <Footer/>
 </>

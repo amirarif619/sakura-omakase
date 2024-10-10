@@ -3,7 +3,7 @@ import { useState , useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 
-function ViewBookingModal({ show, handleClose, booking, refreshBookings, onDeletedBooking,  handleEditedBookingCompleted  }) {
+function ViewBookingModal({ show, handleClose, booking, onDeletedBooking,  handleEditedBookingCompleted  }) {
    
     const [isEditing, setIsEditing] = useState(false); 
     const [formData, setFormData] = useState({
@@ -43,28 +43,28 @@ function ViewBookingModal({ show, handleClose, booking, refreshBookings, onDelet
     
     const handleSave = async () => {
         try {
-            await axios.put(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings/${booking.id}`, formData);
-            refreshBookings(); 
-            handleClose(); 
+            const response = await axios.put(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings/${booking.id}`, formData);
+            console.log('Updated booking response:', response.data)
+            handleEditedBookingCompleted(response.data)
             setIsEditing(false); 
-            handleEditedBookingCompleted()
+            handleClose(); 
         } catch (error) {
             console.error('Error updating booking:', error);
         }
     };
 
-    const handleDelete = async () => {
+    const handleDelete = async (bookingId) => {
         if (window.confirm('Are you sure you want to cancel this booking?')) {
             try {
-                await axios.delete(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings/${booking.id}`);
-                refreshBookings(); 
-                onDeletedBooking()
+                await axios.delete(`https://1d07bdaa-ce73-463b-8de7-111ccb00dd02-00-3g0n80mknuo06.sisko.replit.dev/bookings/${bookingId}`);
+                onDeletedBooking(bookingId)
                 handleClose(); 
             } catch (error) {
                 console.error('Error deleting booking:', error);
             }
         }
     };
+
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -146,7 +146,7 @@ function ViewBookingModal({ show, handleClose, booking, refreshBookings, onDelet
                         </Form.Group>
                     </Form>
                 ) : (
-                    // If not in edit mode, show static details
+               
                     <>
                         <p><strong>Title:</strong> {booking.title}</p>
                         <p><strong>Date:</strong> {booking.date}</p>
@@ -166,7 +166,11 @@ function ViewBookingModal({ show, handleClose, booking, refreshBookings, onDelet
                 ) : (
                     <>
                         <Button variant="primary" onClick={() => setIsEditing(true)}>Edit Booking</Button>
-                        <Button variant="danger" onClick={handleDelete}>Cancel Booking</Button>
+                        <Button variant="danger"
+                         onClick={() => handleDelete(booking.id)}
+                         >
+                        Cancel Booking
+                        </Button>
                         <Button variant="secondary" onClick={handleClose}>Close</Button>
                     </>
                 )}
