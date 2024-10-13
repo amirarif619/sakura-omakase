@@ -32,7 +32,7 @@ export default function AdminPage() {
       }
     });
 
-    return () => unsubscribe();  // Clean up listener
+    return () => unsubscribe();  
   }, [navigate]);
 
   useEffect(() => {

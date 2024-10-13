@@ -13,14 +13,14 @@ export default function MainNavbar({ onShowLogin, onShowSignUp}) {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-    return () => unsubscribe(); // Clean up the listener on component unmount
+    return () => unsubscribe(); 
   }, []);
 
-  // Handle log out
+  
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      setUser(null); // Reset the user state after successful logout
+      setUser(null); 
     } catch (error) {
       console.error('Error logging out:', error);
     }

@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="footer mt-5 pt-5">
       <Container>
         <Row>
-          {/* About OMAKASE */}
+      
           <Col xs={12} md={3}>
             <h6>About SAKURA OMAKASE</h6>
             <ul className="list-unstyled">
@@ -17,7 +17,7 @@ const Footer = () => {
             </ul>
           </Col>
 
-          {/* Help */}
+
           <Col xs={12} md={3}>
             <h6>Help</h6>
             <ul className="list-unstyled">
@@ -26,7 +26,7 @@ const Footer = () => {
             </ul>
           </Col>
 
-          {/* Reservation */}
+          
           <Col xs={12} md={3}>
             <h6>Reservation</h6>
             <ul className="list-unstyled">
@@ -39,7 +39,7 @@ const Footer = () => {
             </ul>
           </Col>
 
-          {/* Legal */}
+        
           <Col xs={12} md={3}>
             <h6>Legal</h6>
             <ul className="list-unstyled">
@@ -52,13 +52,13 @@ const Footer = () => {
           </Col>
         </Row>
 
-        {/* Footer Bottom */}
+        
         <Row className="mt-4">
           <Col xs={12} md={6}>
             <p className="text-muted">&copy; 2024 SAKURA OMAKASE</p>
           </Col>
           <Col xs={12} md={6} className="text-md-end">
-            {/* Icons */}
+        
             <a href="#" className="me-2"><i className="bi bi-facebook"></i></a>
             <a href="#" className="me-2"><i className="bi bi-instagram"></i></a>
           </Col>
